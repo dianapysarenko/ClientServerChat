@@ -1,4 +1,4 @@
-namespace ClientServerChat
+namespace Commun
 {
     public partial class Form1 : Form
     {
