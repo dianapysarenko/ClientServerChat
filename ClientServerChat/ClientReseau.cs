@@ -21,12 +21,15 @@ public class ClientReseau
 
     public int ClientId { get; internal set; }
     public bool EstConnecte { get; private set; }
-    public bool EnEcoute { get; private set; }
+    public bool Connected { get; internal set; }
+    public Mutex AccessMessages { get; internal set; }
+    public AutoResetEvent SignalementMessage { get; internal set; }
+    public AutoResetEvent SignalementSortie { get; internal set; }
+    public Stack<Message> Messages { get; internal set; }
 
     public ClientReseau()
     {
         EstConnecte = false;
-        EnEcoute = false;
     }
 
     public ClientReseau(string adresseIp, int port) : this()
@@ -66,7 +69,7 @@ public class ClientReseau
         return EstConnecte;
     }
 
-         public void Deconnecter()
+    public void Deconnecter()
     {
         if (EstConnecte)
         {
@@ -76,52 +79,34 @@ public class ClientReseau
 
     public void Demarrer()
     {
-        _threadReception = new Thread(EcouterServeur);
         _threadReception.Start();
     }
 
-    private void EcouterServeur()
-    {
-        EnEcoute = true;
-
-        byte[] tampon = new byte[6_000_000];
-        int taille;
-
-        while (true)
-        {
-            taille = 0;
-
-            try
-            {
-                taille = _stream.Read(tampon, 0, tampon.Length);
-            }
-            catch
-            {
-                break; // Erreur socket → on arrête
-            }
-
-            if (taille == 0)
-                break; // Déconnecté côté serveur
-
-            // Convertir en texte
-            string brut = Encoding.ASCII.GetString(tampon, 0, taille);
-
-            // Stockage thread-safe
-            MutexMessages.WaitOne();
-            MutexMessages.ReleaseMutex();
-
-            // Signaler un nouveau message
-            MessageRecuSignal.Set();
-        }
-
-        EnEcoute = false;
-        FermetureSignal.Set();
-    }
     public void Envoyer(string texte)
     {
         if (!EnEcoute) return;
 
         byte[] data = Encoding.ASCII.GetBytes(texte);
         _stream.Write(data, 0, data.Length);
+    }
+
+    internal void Disconnect()
+    {
+        throw new NotImplementedException();
+    }
+
+    internal void Ecrire(object data)
+    {
+        throw new NotImplementedException();
+    }
+
+    internal bool Connect()
+    {
+        throw new NotImplementedException();
+    }
+
+    internal void Start()
+    {
+        throw new NotImplementedException();
     }
 }

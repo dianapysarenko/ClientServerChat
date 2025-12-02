@@ -1,4 +1,4 @@
-namespace ClientServerChat
+﻿namespace ClientServerChat
 {
     public partial class MainWindow : Form
     {

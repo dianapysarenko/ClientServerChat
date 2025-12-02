@@ -17,8 +17,6 @@ namespace Commun
         //L'Alias de l'emetteur
         public string Alias { get; set; }
 
-
-
         public ChatMessage() { }
 
 
