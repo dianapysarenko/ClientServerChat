@@ -26,6 +26,8 @@ public class ClientReseau
     public AutoResetEvent SignalementMessage { get; internal set; }
     public AutoResetEvent SignalementSortie { get; internal set; }
     public Stack<Message> Messages { get; internal set; }
+    public bool EnEcoute { get; private set; }
+    public object Id { get; internal set; }
 
     public ClientReseau()
     {

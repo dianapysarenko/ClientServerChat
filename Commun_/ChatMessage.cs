@@ -18,7 +18,5 @@ namespace Commun
         public string Alias { get; set; }
 
         public ChatMessage() { }
-
-
     }
 }
